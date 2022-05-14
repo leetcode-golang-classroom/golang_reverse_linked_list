@@ -11,21 +11,21 @@ func reverseList(head *ListNode) *ListNode {
 	if head == nil {
 		return head
 	}
-	arr := []*ListNode{}
+	var prev *ListNode
 	cur := head
 	for cur != nil {
-		arr = append(arr, cur)
-		cur = cur.Next
-	}
-	aLen := len(arr)
-	for idx := aLen - 1; idx >= 0; idx-- {
-		if idx == 0 {
-			arr[idx].Next = nil
+		if prev == nil { // this is tail
+			prev = cur
+			cur = cur.Next
+			prev.Next = nil
 		} else {
-			arr[idx].Next = arr[idx-1]
-		}
-		if idx == aLen-1 {
-			head = arr[idx]
+			temp := prev
+			prev = cur
+			cur = cur.Next
+			if cur == nil {
+				head = prev
+			}
+			prev.Next = temp
 		}
 	}
 	return head
