@@ -46,7 +46,21 @@ Output: []
 
 然後在把陣列倒著串起來
 
-這樣時間複雜度是O(n)
+這樣時間複雜度是O(n) 而空間複雜度也會是 O(n)
+
+而透過另一個方式
+
+每次把走訪到的結點都放到最前面，多用一個指標來記住上一個結點
+
+這樣走訪過一次方好可以反向所有的結點
+
+這樣時間複雜度是O(n) 會降低到 O(1)
+
+![](https://i.imgur.com/UefJteX.png)
+
+如果遞迴的作法可以觀察下圖
+
+![](https://i.imgur.com/T55TFoo.png)
 
 ## 程式碼
 
@@ -59,27 +73,27 @@ Output: []
  * }
  */
 func reverseList(head *ListNode) *ListNode {
-  if head == nil {
-    return head
-  }
-  arr := []*ListNode{}
-  cur := head
-  for cur != nil {
-     arr = append(arr, cur)
-     cur = cur.Next
-  }
-  aLen := len(arr)
-  for idx := aLen - 1; idx >= 0; idx-- {
-     if idx == 0 {
-        arr[idx].Next = nil
-     } else {
-        arr[idx].Next = arr[idx-1]
-     }
-     if idx == aLen - 1 {
-         head = arr[idx]
-     }
-  }
-  return head
+	if head == nil {
+		return head
+	}
+	var prev *ListNode
+	cur := head
+	for cur != nil {
+		if prev == nil { // this is tail
+			prev = cur
+			cur = cur.Next
+			prev.Next = nil
+		} else {
+			temp := prev
+			prev = cur
+			cur = cur.Next
+			if cur == nil {
+				head = prev
+			}
+			prev.Next = temp
+		}
+	}
+	return head
 }
 ```
 
